@@ -1,5 +1,7 @@
 ### 1.0.0-alpha2 (in progress)
 
+- [improvement] Exclude Groovy jars when importing the driver (fixes #101)
+
 ### 1.0.0-alpha1
 
 - [new feature] Add setting for DataStax Astra secure connect bundle (fixes #94)
