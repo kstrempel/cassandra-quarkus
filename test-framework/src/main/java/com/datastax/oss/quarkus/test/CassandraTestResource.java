@@ -17,7 +17,7 @@ package com.datastax.oss.quarkus.test;
 
 import io.quarkus.test.common.QuarkusTestResourceLifecycleManager;
 import java.net.URL;
-import java.util.Collections;
+import java.util.HashMap;
 import java.util.Map;
 import org.jboss.logging.Logger;
 import org.testcontainers.containers.CassandraContainer;
@@ -57,8 +57,13 @@ public class CassandraTestResource implements QuarkusTestResourceLifecycleManage
     cassandraContainer.start();
     String exposedPort =
         String.valueOf(cassandraContainer.getMappedPort(CassandraContainer.CQL_PORT));
-    LOGGER.infof("Started %s on port %s", cassandraContainer.getDockerImageName(), exposedPort);
-    return Collections.singletonMap("quarkus.cassandra.docker_port", exposedPort);
+    String exposedHost = cassandraContainer.getContainerIpAddress();
+    LOGGER.infof(
+        "Started %s on %s:%s", cassandraContainer.getDockerImageName(), exposedHost, exposedPort);
+    HashMap<String, String> result = new HashMap<>();
+    result.put("quarkus.cassandra.docker_host", exposedHost);
+    result.put("quarkus.cassandra.docker_port", exposedPort);
+    return result;
   }
 
   @Override
